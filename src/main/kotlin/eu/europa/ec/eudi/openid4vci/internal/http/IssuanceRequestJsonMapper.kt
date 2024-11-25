@@ -124,20 +124,13 @@ internal data class CredentialDefinitionTO(
 )
 
 @Serializable
-internal data class VerifierKATO(
-
-    @SerialName("jwk")
-    val jwk: JsonObject,
-)
-
-@Serializable
 internal data class CredentialRequestTO(
     @SerialName("credential_identifier") val credentialIdentifier: String? = null,
     @SerialName("format") val format: String? = null,
     @SerialName("doctype") val docType: String? = null,
     @SerialName("vct") val vct: String? = null,
     @SerialName("proof") val proof: Proof? = null,
-    @SerialName("verifier-ka") val verifierKA: VerifierKATO? = null,
+    @SerialName("verifier_pub") val verifierPub: JsonObject? = null,
     @SerialName("credential_response_encryption") val credentialResponseEncryption: CredentialResponseEncryptionSpecTO? = null,
     @SerialName("claims") val claims: JsonObject? = null,
     @SerialName("credential_definition") val credentialDefinition: CredentialDefinitionTO? = null,
@@ -153,12 +146,10 @@ internal data class CredentialRequestTO(
                 CredentialResponseEncryptionSpecTO.from(this)
             }
 
-        private fun verifierKA(
+        private fun verifierPub(
             verifierKA: VerifierKA?,
-        ): VerifierKATO? = verifierKA?.let {
-            VerifierKATO(
-                jwk = Json.parseToJsonElement(it.jwk.toString()).jsonObject,
-            )
+        ): JsonObject? = verifierKA?.let {
+                Json.parseToJsonElement(it.jwk.toString()).jsonObject
         }
 
         fun from(request: CredentialIssuanceRequest.FormatBased, credential: CredentialType.MsoMdocDocType) =
@@ -170,7 +161,7 @@ internal data class CredentialRequestTO(
                 claims = credential.claimSet?.let {
                     Json.encodeToJsonElement(it).jsonObject
                 },
-                verifierKA = verifierKA(request.verifierKA),
+                verifierPub = verifierPub(request.verifierKA),
             )
 
         fun from(request: CredentialIssuanceRequest.FormatBased, credential: CredentialType.SdJwtVcType) =
@@ -186,7 +177,7 @@ internal data class CredentialRequestTO(
                         }
                     }
                 },
-                verifierKA = verifierKA(request.verifierKA),
+                verifierPub = verifierPub(request.verifierKA),
             )
 
         fun from(request: CredentialIssuanceRequest.FormatBased, credential: CredentialType.SeTlvVcType) =
@@ -202,7 +193,7 @@ internal data class CredentialRequestTO(
                         }
                     }
                 },
-                verifierKA = verifierKA(request.verifierKA),
+                verifierPub = verifierPub(request.verifierKA),
             )
 
         fun from(request: CredentialIssuanceRequest.FormatBased, credential: CredentialType.W3CSignedJwtType) =
@@ -220,7 +211,7 @@ internal data class CredentialRequestTO(
                         }
                     },
                 ),
-                verifierKA = verifierKA(request.verifierKA),
+                verifierPub = verifierPub(request.verifierKA),
             )
 
         fun from(request: CredentialIssuanceRequest.IdentifierBased) =
@@ -228,7 +219,7 @@ internal data class CredentialRequestTO(
                 credentialIdentifier = request.credentialId.value,
                 proof = request.proof,
                 credentialResponseEncryption = credentialResponseEncryption(request),
-                verifierKA = verifierKA(request.verifierKA),
+                verifierPub = verifierPub(request.verifierKA),
             )
 
         fun from(request: CredentialIssuanceRequest.SingleRequest): CredentialRequestTO {

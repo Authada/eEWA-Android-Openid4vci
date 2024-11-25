@@ -121,7 +121,11 @@ private data class MsdMdocCredentialTO(
                         claimObject.display?.map { displayObject ->
                             Claim.Display(
                                 displayObject.name,
-                                displayObject.locale?.let { languageTag -> Locale.forLanguageTag(languageTag) },
+                                displayObject.locale?.let { languageTag ->
+                                    Locale.forLanguageTag(
+                                        languageTag
+                                    )
+                                },
                             )
                         } ?: emptyList(),
                     )
@@ -184,7 +188,11 @@ private data class SdJwtVcCredentialTO(
                         it.display?.map { displayObject ->
                             Claim.Display(
                                 displayObject.name,
-                                displayObject.locale?.let { languageTag -> Locale.forLanguageTag(languageTag) },
+                                displayObject.locale?.let { languageTag ->
+                                    Locale.forLanguageTag(
+                                        languageTag
+                                    )
+                                },
                             )
                         } ?: emptyList(),
                     )
@@ -236,7 +244,11 @@ private data class SeTlvVcCredentialTO(
                         it.display?.map { displayObject ->
                             Claim.Display(
                                 displayObject.name,
-                                displayObject.locale?.let { languageTag -> Locale.forLanguageTag(languageTag) },
+                                displayObject.locale?.let { languageTag ->
+                                    Locale.forLanguageTag(
+                                        languageTag
+                                    )
+                                },
                             )
                         } ?: emptyList(),
                     )
@@ -432,7 +444,12 @@ private data class CredentialIssuerMetadataTO(
             .ensureSuccess(::InvalidCredentialIssuerId)
 
         val authorizationServers = authorizationServers
-            ?.map { ensureHttpsUrl(it, CredentialIssuerMetadataValidationError::InvalidAuthorizationServer) }
+            ?.map {
+                ensureHttpsUrl(
+                    it,
+                    CredentialIssuerMetadataValidationError::InvalidAuthorizationServer
+                )
+            }
             ?: listOf(credentialIssuerIdentifier.value)
 
         val credentialEndpoint = CredentialIssuerEndpoint(credentialEndpoint)
@@ -453,12 +470,13 @@ private data class CredentialIssuerMetadataTO(
         }
 
         ensure(credentialConfigurationsSupported.isNotEmpty()) { CredentialIssuerMetadataValidationError.CredentialsSupportedRequired }
-        val credentialsSupported = credentialConfigurationsSupported.map { (id, credentialSupportedTO) ->
-            val credentialId = CredentialConfigurationIdentifier(id)
-            val credential = runCatching { credentialSupportedTO.toDomain() }
-                .ensureSuccess(CredentialIssuerMetadataValidationError::InvalidCredentialsSupported)
-            credentialId to credential
-        }.toMap()
+        val credentialsSupported =
+            credentialConfigurationsSupported.map { (id, credentialSupportedTO) ->
+                val credentialId = CredentialConfigurationIdentifier(id)
+                val credential = runCatching { credentialSupportedTO.toDomain() }
+                    .ensureSuccess(CredentialIssuerMetadataValidationError::InvalidCredentialsSupported)
+                credentialId to credential
+            }.toMap()
 
         val display = display?.map(DisplayTO::toDomain) ?: emptyList()
 
@@ -479,13 +497,18 @@ private data class CredentialIssuerMetadataTO(
     private fun credentialResponseEncryption(): CredentialResponseEncryption {
         fun algsAndMethods(): SupportedEncryptionAlgorithmsAndMethods {
             requireNotNull(credentialResponseEncryption)
-            val encryptionAlgorithms = credentialResponseEncryption.algorithmsSupported.map { JWEAlgorithm.parse(it) }
-            val encryptionMethods = credentialResponseEncryption.methodsSupported.map { EncryptionMethod.parse(it) }
+            val encryptionAlgorithms =
+                credentialResponseEncryption.algorithmsSupported.map { JWEAlgorithm.parse(it) }
+            val encryptionMethods =
+                credentialResponseEncryption.methodsSupported.map { EncryptionMethod.parse(it) }
             return SupportedEncryptionAlgorithmsAndMethods(encryptionAlgorithms, encryptionMethods)
         }
         return when {
             credentialResponseEncryption == null -> CredentialResponseEncryption.NotSupported
-            credentialResponseEncryption.encryptionRequired -> CredentialResponseEncryption.Required(algsAndMethods())
+            credentialResponseEncryption.encryptionRequired -> CredentialResponseEncryption.Required(
+                algsAndMethods()
+            )
+
             else -> CredentialResponseEncryption.SupportedNotRequired(algsAndMethods())
         }
     }
@@ -508,14 +531,15 @@ private data class CredentialSupportedDisplayTO(
     @SerialName("logo") val logo: LogoObject? = null,
     @SerialName("description") val description: String? = null,
     @SerialName("background_color") val backgroundColor: String? = null,
+    @SerialName("background_image") val backgroundImage: LogoObject? = null,
     @SerialName("text_color") val textColor: String? = null,
 ) {
     /**
      * Utility method to convert a [CredentialSupportedDisplayTO] transfer object to the respective [Display] domain object.
      */
     fun toDomain(): Display {
-        fun LogoObject.toLogo(): Display.Logo =
-            Display.Logo(
+        fun LogoObject.toImage(): Display.Image =
+            Display.Image(
                 uri?.let { URI.create(it) },
                 alternativeText,
             )
@@ -523,9 +547,10 @@ private data class CredentialSupportedDisplayTO(
         return Display(
             name,
             locale?.let { Locale.forLanguageTag(it) },
-            logo?.toLogo(),
+            logo?.toImage(),
             description,
             backgroundColor,
+            backgroundImage?.toImage(),
             textColor,
         )
     }

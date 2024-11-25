@@ -68,6 +68,8 @@ import java.net.URI
 import com.nimbusds.oauth2.sdk.Scope as NimbusScope
 import com.nimbusds.oauth2.sdk.rar.AuthorizationDetail as NimbusAuthorizationDetail
 
+typealias NamespaceForClaimsIfMdoc = String
+
 /**
  * Sealed hierarchy of possible responses to a Pushed Authorization Request.
  */
@@ -184,7 +186,7 @@ internal class AuthorizationServerClient(
         credentialsConfigurationIds: List<CredentialConfigurationIdentifier>,
         state: String,
         issuerState: String?,
-        claims: Map<String, Any>,
+        claims: Map<NamespaceForClaimsIfMdoc?, Any>,
     ): Result<Pair<PKCEVerifier, HttpsUrl>> =
         if (supportsPar) {
             submitPushedAuthorizationRequest(scopes, credentialsConfigurationIds, state, issuerState, claims)
@@ -209,7 +211,7 @@ internal class AuthorizationServerClient(
         credentialsConfigurationIds: List<CredentialConfigurationIdentifier>,
         state: String,
         issuerState: String?,
-        claims: Map<String, Any>,
+        claims: Map<NamespaceForClaimsIfMdoc?, Any>,
     ): Result<Pair<PKCEVerifier, HttpsUrl>> = runCatching {
         require(scopes.isNotEmpty() || credentialsConfigurationIds.isNotEmpty()) {
             "No scopes or authorization details provided. Cannot submit par."
@@ -258,7 +260,7 @@ internal class AuthorizationServerClient(
         credentialsAuthorizationDetails: List<CredentialConfigurationIdentifier>,
         state: String,
         issuerState: String?,
-        claims: Map<String, Any>,
+        claims: Map<NamespaceForClaimsIfMdoc?, Any>,
     ): Result<Pair<PKCEVerifier, HttpsUrl>> = runCatching {
         require(credentialsScopes.isNotEmpty() || credentialsAuthorizationDetails.isNotEmpty()) {
             "No scopes or authorization details provided. Cannot prepare authorization request."
@@ -407,14 +409,20 @@ internal class AuthorizationServerClient(
 
     private fun toNimbus(
         credentialConfigurationId: CredentialConfigurationIdentifier,
-        claims: Map<String, Any>,
+        claims: Map<NamespaceForClaimsIfMdoc?, Any>,
     ): AuthorizationDetail {
         val nimbus = with(NimbusAuthorizationDetail.Builder(AuthorizationType(OPENID_CREDENTIAL))) {
             if (credentialIssuerId.toString() != authorizationServerMetadata.issuer.toString()) {
                 val locations = listOf(Location(credentialIssuerId.value.value.toURI()))
                 locations(locations)
             }
-            field("claims", JSONObject(claims))
+            val isClaimsForMdoc = claims.keys.any { it != null }
+            val fieldContent : Any = if (isClaimsForMdoc) {
+                JSONObject(claims)
+            } else {
+                claims.values
+            }
+            field("claims", fieldContent)
             field("credential_configuration_id", credentialConfigurationId.value)
         }.build()
         return nimbus

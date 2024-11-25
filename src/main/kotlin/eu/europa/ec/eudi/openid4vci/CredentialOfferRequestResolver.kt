@@ -32,6 +32,7 @@ package eu.europa.ec.eudi.openid4vci
 
 import eu.europa.ec.eudi.openid4vci.internal.DefaultCredentialOfferRequestResolver
 import eu.europa.ec.eudi.openid4vci.internal.ensure
+import eu.europa.ec.eudi.openid4vci.internal.http.NamespaceForClaimsIfMdoc
 import io.ktor.http.*
 import java.io.Serializable
 import kotlin.time.Duration
@@ -45,7 +46,7 @@ data class CredentialOffer(
     val authorizationServerMetadata: CIAuthorizationServerMetadata,
     val credentialConfigurationIdentifiers: List<CredentialConfigurationIdentifier>,
     val grants: Grants? = null,
-    val claims: Map<String, Any> = emptyMap(),
+    val claims: Map<NamespaceForClaimsIfMdoc?, Any> = emptyMap(),
 ) : Serializable {
     init {
         require(credentialConfigurationIdentifiers.isNotEmpty()) { "credentials must not be empty" }

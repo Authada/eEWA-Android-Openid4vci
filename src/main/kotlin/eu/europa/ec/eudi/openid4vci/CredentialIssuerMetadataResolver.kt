@@ -99,7 +99,14 @@ data class CredentialIssuerMetadata(
     data class Display(
         val name: String? = null,
         val locale: String? = null,
+        val logo: Logo? = null
     ) : Serializable
+
+
+    data class Logo(
+        val uri: String,
+        val alternativeText: String?
+    ): Serializable
 }
 
 fun CredentialIssuerMetadata.findMsoMdoc(docType: String): MsoMdocCredential? =

@@ -67,8 +67,8 @@ internal object PidDevIssuer {
         val password: String,
     )
 
-    val PID_SdJwtVC_config_id = CredentialConfigurationIdentifier("eu.europa.ec.eudiw.pid_vc_sd_jwt")
-    val PID_MsoMdoc_config_id = CredentialConfigurationIdentifier("eu.europa.ec.eudiw.pid_mso_mdoc")
+    val PID_SdJwtVC_config_id = CredentialConfigurationIdentifier("eu.europa.ec.eudi.pid_vc_sd_jwt")
+    val PID_MsoMdoc_config_id = CredentialConfigurationIdentifier("eu.europa.ec.eudi.pid_mso_mdoc")
     val MDL_config_id = CredentialConfigurationIdentifier("org.iso.18013.5.1.mDL")
 
     val AllCredentialConfigurationIds = listOf(

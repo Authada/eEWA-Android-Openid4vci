@@ -118,16 +118,17 @@ typealias CssColor = String
 data class Display(
     val name: String,
     val locale: Locale? = null,
-    val logo: Logo? = null,
+    val logo: Image? = null,
     val description: String? = null,
     val backgroundColor: CssColor? = null,
-    val textColor: CssColor? = null,
+    val backgroundImage: Image?,
+    val textColor: CssColor? = null
 ) : Serializable {
 
     /**
-     * Logo information.
+     * Image information.
      */
-    data class Logo(
+    data class Image(
         val uri: URI? = null,
         val alternativeText: String? = null,
     ) : Serializable

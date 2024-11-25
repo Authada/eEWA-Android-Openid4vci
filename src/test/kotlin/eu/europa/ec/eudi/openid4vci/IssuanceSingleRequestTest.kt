@@ -418,7 +418,7 @@ class IssuanceSingleRequestTest {
             authServerWellKnownMocker(),
             parPostMocker(),
             tokenPostMockerWithAuthDetails(
-                listOf(CredentialConfigurationIdentifier("eu.europa.ec.eudiw.pid_vc_sd_jwt")),
+                listOf(CredentialConfigurationIdentifier("eu.europa.ec.eudi.pid_vc_sd_jwt")),
             ),
             singleIssuanceRequestMocker(
                 credential = "credential",
@@ -459,7 +459,7 @@ class IssuanceSingleRequestTest {
             authServerWellKnownMocker(),
             parPostMocker(),
             tokenPostMockerWithAuthDetails(
-                listOf(CredentialConfigurationIdentifier("eu.europa.ec.eudiw.pid_vc_sd_jwt")),
+                listOf(CredentialConfigurationIdentifier("eu.europa.ec.eudi.pid_vc_sd_jwt")),
             ),
             singleIssuanceRequestMocker(
                 credential = "credential",
@@ -482,7 +482,7 @@ class IssuanceSingleRequestTest {
             when (authorizedRequest) {
                 is AuthorizedRequest.NoProofRequired -> {
                     val requestPayload = IssuanceRequestPayload.IdentifierBased(
-                        CredentialConfigurationIdentifier("eu.europa.ec.eudiw.pid_vc_sd_jwt"),
+                        CredentialConfigurationIdentifier("eu.europa.ec.eudi.pid_vc_sd_jwt"),
                         CredentialIdentifier("DUMMY"),
                     )
                     assertThrows<IllegalArgumentException> {
@@ -524,7 +524,7 @@ class IssuanceSingleRequestTest {
             when (authorizedRequest) {
                 is AuthorizedRequest.NoProofRequired -> {
                     val requestPayload = IssuanceRequestPayload.IdentifierBased(
-                        CredentialConfigurationIdentifier("eu.europa.ec.eudiw.pid_vc_sd_jwt"),
+                        CredentialConfigurationIdentifier("eu.europa.ec.eudi.pid_vc_sd_jwt"),
                         CredentialIdentifier("id"),
                     )
                     assertThrows<IllegalArgumentException> {
@@ -545,7 +545,7 @@ class IssuanceSingleRequestTest {
             authServerWellKnownMocker(),
             parPostMocker(),
             tokenPostMockerWithAuthDetails(
-                listOf(CredentialConfigurationIdentifier("eu.europa.ec.eudiw.pid_vc_sd_jwt")),
+                listOf(CredentialConfigurationIdentifier("eu.europa.ec.eudi.pid_vc_sd_jwt")),
             ),
             singleIssuanceRequestMocker(
                 credential = "credential",

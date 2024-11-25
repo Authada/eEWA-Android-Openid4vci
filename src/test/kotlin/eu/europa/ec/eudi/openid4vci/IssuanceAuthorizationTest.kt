@@ -47,7 +47,7 @@ import com.nimbusds.oauth2.sdk.rar.AuthorizationDetail as NimbusAuthorizationDet
 private val AUTH_CODE_GRANT_CREDENTIAL_OFFER = """
         {
           "credential_issuer": "$CREDENTIAL_ISSUER_PUBLIC_URL",
-          "credential_configuration_ids": ["eu.europa.ec.eudiw.pid_mso_mdoc", "eu.europa.ec.eudiw.pid_vc_sd_jwt"],
+          "credential_configuration_ids": ["eu.europa.ec.eudi.pid_mso_mdoc", "eu.europa.ec.eudi.pid_vc_sd_jwt"],
           "grants": {
             "authorization_code": {
               "issuer_state": "eyJhbGciOiJSU0EtFYUaBy"
@@ -59,7 +59,7 @@ private val AUTH_CODE_GRANT_CREDENTIAL_OFFER = """
 private val PRE_AUTH_CODE_GRANT_CREDENTIAL_OFFER = """
         {
           "credential_issuer": "$CREDENTIAL_ISSUER_PUBLIC_URL",
-          "credential_configuration_ids": ["eu.europa.ec.eudiw.pid_mso_mdoc", "eu.europa.ec.eudiw.pid_vc_sd_jwt"],
+          "credential_configuration_ids": ["eu.europa.ec.eudi.pid_mso_mdoc", "eu.europa.ec.eudi.pid_vc_sd_jwt"],
           "grants": {
             "urn:ietf:params:oauth:grant-type:pre-authorized_code": {
               "pre-authorized_code": "eyJhbGciOiJSU0EtFYUaBy",
@@ -86,11 +86,11 @@ class IssuanceAuthorizationTest {
                 )
                 val form = assertIs<FormDataContent>(request.body, "Not a form post")
 
-                assertTrue("Missing scope eu.europa.ec.eudiw.pid_vc_sd_jwt") {
-                    form.formData["scope"]?.contains("eu.europa.ec.eudiw.pid_vc_sd_jwt") ?: false
+                assertTrue("Missing scope eu.europa.ec.eudi.pid_vc_sd_jwt") {
+                    form.formData["scope"]?.contains("eu.europa.ec.eudi.pid_vc_sd_jwt") ?: false
                 }
-                assertTrue("Missing scope eu.europa.ec.eudiw.pid_mso_mdoc") {
-                    form.formData["scope"]?.contains("eu.europa.ec.eudiw.pid_mso_mdoc") ?: false
+                assertTrue("Missing scope eu.europa.ec.eudi.pid_mso_mdoc") {
+                    form.formData["scope"]?.contains("eu.europa.ec.eudi.pid_mso_mdoc") ?: false
                 }
                 assertNull(
                     form.formData["issuer_state"],
@@ -176,11 +176,11 @@ class IssuanceAuthorizationTest {
                     )
                     val form = assertIs<FormDataContent>(request.body, "Not a form post")
 
-                    assertTrue("Missing scope eu.europa.ec.eudiw.pid_vc_sd_jwt") {
-                        form.formData["authorization_details"]?.contains("eu.europa.ec.eudiw.pid_vc_sd_jwt") ?: false
+                    assertTrue("Missing scope eu.europa.ec.eudi.pid_vc_sd_jwt") {
+                        form.formData["authorization_details"]?.contains("eu.europa.ec.eudi.pid_vc_sd_jwt") ?: false
                     }
-                    assertTrue("Missing scope eu.europa.ec.eudiw.pid_mso_mdoc") {
-                        form.formData["authorization_details"]?.contains("eu.europa.ec.eudiw.pid_mso_mdoc") ?: false
+                    assertTrue("Missing scope eu.europa.ec.eudi.pid_mso_mdoc") {
+                        form.formData["authorization_details"]?.contains("eu.europa.ec.eudi.pid_mso_mdoc") ?: false
                     }
                     assertNull(
                         form.formData["issuer_state"],
@@ -751,18 +751,18 @@ class IssuanceAuthorizationTest {
                         form.formData["authorization_details"] != null
                     }
                     val authDetails = NimbusAuthorizationDetail.parseList(form.formData["authorization_details"])
-                    assertTrue("Missing authorization_details eu.europa.ec.eudiw.pid_mso_mdoc") {
+                    assertTrue("Missing authorization_details eu.europa.ec.eudi.pid_mso_mdoc") {
                         authDetails.any {
                             it.getField("credential_configuration_id") != null &&
-                                it.getField("credential_configuration_id").equals("eu.europa.ec.eudiw.pid_mso_mdoc")
+                                it.getField("credential_configuration_id").equals("eu.europa.ec.eudi.pid_mso_mdoc")
                         }
                     }
 
                     assertTrue("Missing scope attribute") {
                         form.formData["scope"] != null
                     }
-                    assertTrue("Missing scope eu.europa.ec.eudiw.pid_vc_sd_jwt") {
-                        form.formData["scope"]?.contains("eu.europa.ec.eudiw.pid_vc_sd_jwt") ?: false
+                    assertTrue("Missing scope eu.europa.ec.eudi.pid_vc_sd_jwt") {
+                        form.formData["scope"]?.contains("eu.europa.ec.eudi.pid_vc_sd_jwt") ?: false
                     }
                 },
                 RequestMocker(

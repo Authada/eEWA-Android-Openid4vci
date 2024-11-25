@@ -35,8 +35,8 @@ import java.net.URI
 import java.util.*
 
 const val CREDENTIAL_ISSUER_PUBLIC_URL = "https://credential-issuer.example.com"
-const val PID_SdJwtVC = "eu.europa.ec.eudiw.pid_vc_sd_jwt"
-const val PID_MsoMdoc = "eu.europa.ec.eudiw.pid_mso_mdoc"
+const val PID_SdJwtVC = "eu.europa.ec.eudi.pid_vc_sd_jwt"
+const val PID_MsoMdoc = "eu.europa.ec.eudi.pid_mso_mdoc"
 const val DEGREE_JwtVcJson = "UniversityDegree_jwt_vc_json"
 const val MDL_MsoMdoc = "MobileDrivingLicense_msoMdoc"
 

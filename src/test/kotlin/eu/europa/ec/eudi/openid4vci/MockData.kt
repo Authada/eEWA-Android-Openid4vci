@@ -101,12 +101,16 @@ internal fun universityDegreeJwt() = W3CSignedJwtCredential(
         Display(
             "University Credential",
             Locale.forLanguageTag("en-US"),
-            Display.Logo(
+            Display.Image(
                 URI.create("https://exampleuniversity.com/public/logo.png"),
                 "a square logo of a university",
             ),
             null,
             "#12107c",
+            Display.Image(
+                URI.create("https://exampleuniversity.com/public/background.png"),
+                "a background of a university",
+            ),
             "#FFFFFF",
         ),
     ),
@@ -152,12 +156,16 @@ internal fun universityDegreeLdpVc() = W3CJsonLdDataIntegrityCredential(
         Display(
             "University Credential",
             Locale.forLanguageTag("en-US"),
-            Display.Logo(
+            Display.Image(
                 URI.create("https://exampleuniversity.com/public/logo.png"),
                 "a square logo of a university",
             ),
             null,
             "#12107c",
+            Display.Image(
+                URI.create("https://exampleuniversity.com/public/background.png"),
+                "a background of a university",
+            ),
             "#FFFFFF",
         ),
     ),
@@ -212,12 +220,16 @@ internal fun universityDegreeJwtVcJsonLD() = W3CJsonLdSignedJwtCredential(
         Display(
             "University Credential",
             Locale.forLanguageTag("en-US"),
-            Display.Logo(
+            Display.Image(
                 URI.create("https://exampleuniversity.com/public/logo.png"),
                 "a square logo of a university",
             ),
             null,
             "#12107c",
+            Display.Image(
+                URI.create("https://exampleuniversity.com/public/background.png"),
+                "a background of a university",
+            ),
             "#FFFFFF",
         ),
     ),
@@ -271,12 +283,16 @@ internal fun mobileDrivingLicense() = MsoMdocCredential(
         Display(
             "Mobile Driving License",
             Locale.forLanguageTag("en-US"),
-            Display.Logo(
+            Display.Image(
                 URI.create("https://examplestate.com/public/mdl.png"),
                 "a square figure of a mobile driving license",
             ),
             null,
             "#12107c",
+            Display.Image(
+                URI.create("https://exampleuniversity.com/public/background.png"),
+                "a background of a university",
+            ),
             "#FFFFFF",
         ),
     ),
@@ -567,9 +583,9 @@ internal fun oidcAuthorizationServerMetadata(): OIDCProviderMetadata = OIDCProvi
     setSupportsClaimsParams(true)
     scopes = Scope(
         "openid",
-        "eu.europa.ec.eudiw.pid_sd-jwt-vc",
+        "eu.europa.ec.eudi.pid_sd-jwt-vc",
         "web-origins",
-        "eu.europa.ec.eudiw.pid_mso_mdoc",
+        "eu.europa.ec.eudi.pid_mso_mdoc",
         "offline_access",
         "roles",
     )
@@ -788,9 +804,9 @@ internal fun oauthAuthorizationServerMetadata(): AuthorizationServerMetadata = A
     ).map { EncryptionMethod(it) }
     scopes = Scope(
         "openid",
-        "eu.europa.ec.eudiw.pid_sd-jwt-vc",
+        "eu.europa.ec.eudi.pid_sd-jwt-vc",
         "web-origins",
-        "eu.europa.ec.eudiw.pid_mso_mdoc",
+        "eu.europa.ec.eudi.pid_mso_mdoc",
         "offline_access",
         "roles",
     )
